@@ -1,0 +1,16 @@
+/* .container{
+    height: 400px !important;
+    overflow: hidden;
+} */
+
+.carousel-inner{
+    height: 500px;
+}
+
+.carousel-item{
+    height: 500px;
+}
+
+.carousel-item img{
+    height: 100%;
+}
