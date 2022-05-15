@@ -1,14 +1,97 @@
-import React from "react";
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
+import React, { useState } from "react";
+// import Navbar from "../Components/Navbar";
+// import Footer from "../Components/Footer";
 import { Link } from "react-router-dom";
-import { Formik, ErrorMessage, Field, Form } from "formik";
+import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+import { signup } from "../Components/auth";
+
 const Signup = () => {
+  // to store values for sending in assUser
+  const [values, setValues] = useState({
+    first_name: "",
+    last_name: "",
+    date_of_birth: "",
+    gender: "",
+    email: "",
+    password: "",
+    error: "",
+    success: false,
+  });
+  //destructuring
+  const {
+    first_name,
+    last_name,
+    date_of_birth,
+    gender,
+    email,
+    password,
+    error,
+    success,
+  } = values;
+  // handleChange to store values in useState
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, error: false, [name]: event.target.value });
+    console.log(name + ":" + event.target.value);
+  };
+  // submit form
+  const handleSubmit = (event) => {
+    event.preventDefault(); //prevents default action of button
+    setValues({ ...values, error: "false" });
+    signup(values)
+      .then((data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error, success: false });
+        } else {
+          setValues({
+            ...values, //rest operator -> ...
+            first_name: "",
+            last_name: "",
+            date_of_birth: "",
+            gender: "",
+            email: "",
+            password: "",
+            error: "",
+            success: true,
+          });
+        }
+      })
+      .catch((error) => console.log("Database error"));
+  };
+  // to show error
+  const showError = () => {
+    if (error) {
+      console.log(error);
+      return (
+        <div
+          className="alert alert-danger"
+          style={{ display: error ? "" : "none" }}
+        >
+          {error}
+        </div>
+      );
+    }
+  };
+
+  // to show success/user is added
+  const showSuccess = () => {
+    if (success) {
+      return (
+        <div className="alert alert-success">
+          New user added. Please verify your account.
+        </div>
+      );
+    } else {
+      return;
+    }
+  };
+
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
+      {showError()}
+      {showSuccess()}
       <Formik
         initialValues={{
           first_name: "",
@@ -47,9 +130,9 @@ const Signup = () => {
             ),
         })}
       >
-        <div className="conainer-sm w-50 mx-auto mt-5 shadow-lg p-5">
+        <div className="container-sm w-50 mx-auto mt-5 shadow-lg p-5">
           <main className="form-signin">
-            <Form>
+            <form>
               <div className="text-center">
                 <img
                   className="mb-4"
@@ -61,12 +144,14 @@ const Signup = () => {
               </div>
               <h1 className="h3 mb-3 fw-normal">Register</h1>
               <div className="form-floating">
-                <Field
+                <input
                   type="text"
                   className="form-control"
                   id="floatingfirstname"
                   placeholder="first name here"
                   name="first_name"
+                  onChange={handleChange("first_name")}
+                  value={first_name}
                 />
                 <label htmlFor="floatingfirstname">First Name</label>
                 <ErrorMessage name="first_name">
@@ -74,12 +159,14 @@ const Signup = () => {
                 </ErrorMessage>
               </div>
               <div className="form-floating">
-                <Field
+                <input
                   type="text"
                   className="form-control"
                   id="floatinglastname"
                   placeholder="last name here"
                   name="last_name"
+                  onChange={handleChange("last_name")}
+                  value={last_name}
                 />
                 <label htmlFor="floatinglastname">Last Name</label>
                 <ErrorMessage name="last_name">
@@ -87,12 +174,14 @@ const Signup = () => {
                 </ErrorMessage>
               </div>
               <div className="form-floating">
-                <Field
+                <input
                   type="email"
                   className="form-control"
                   id="floatingInput"
                   placeholder="name@example.com"
                   name="email"
+                  onChange={handleChange("email")}
+                  value={email}
                 />
                 <label htmlFor="floatingInput">Email address</label>
                 <ErrorMessage name="email">
@@ -100,11 +189,13 @@ const Signup = () => {
                 </ErrorMessage>
               </div>
               <div className="form-floating">
-                <Field
+                <input
                   type="date"
                   className="form-control"
                   id="floatingdate"
                   placeholder="date of birth here"
+                  onChange={handleChange("date_of_birth")}
+                  value={date_of_birth}
                 />
                 <label htmlFor="floatingdate">Date of Birth</label>
               </div>
@@ -117,6 +208,8 @@ const Signup = () => {
                       type="radio"
                       name="flexRadioDefault"
                       id="flexRadioDefault1"
+                      onChange={handleChange("gender")}
+                      value="Male"
                     />
                     <label class="form-check-label" for="flexRadioDefault1">
                       Male
@@ -128,7 +221,9 @@ const Signup = () => {
                       type="radio"
                       name="flexRadioDefault"
                       id="flexRadioDefault2"
-                      checked
+                      // checked
+                      onChange={handleChange("gender")}
+                      value="Female"
                     />
                     <label class="form-check-label" for="flexRadioDefault2">
                       Female
@@ -137,12 +232,14 @@ const Signup = () => {
                 </div>
               </label>
               <div className="form-floating">
-                <Field
+                <input
                   type="password"
                   className="form-control"
                   id="floatingPassword"
                   placeholder="Password"
                   name="password"
+                  onChange={handleChange("password")}
+                  value={password}
                 />
                 <label htmlFor="floatingPassword">Password</label>
                 <ErrorMessage name="password">
@@ -150,7 +247,7 @@ const Signup = () => {
                 </ErrorMessage>
               </div>
               <div className="form-floating">
-                <Field
+                <input
                   type="password"
                   className="form-control"
                   id="floatingcPassword"
@@ -168,16 +265,20 @@ const Signup = () => {
                   terms and conditions.
                 </label>
               </div>
-              <button className="w-100 btn btn-lg btn-primary" type="submit">
+              <button
+                className="w-100 btn btn-lg btn-primary"
+                type="submit"
+                onClick={handleSubmit}
+              >
                 Register
               </button>
               Already have an account? <Link to="/signin">Signin</Link>
               <p className="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
-            </Form>
+            </form>
           </main>
         </div>
       </Formik>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

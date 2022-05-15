@@ -1,11 +1,11 @@
 import React from "react";
-import Footer from "../Components/Footer";
-import Navbar from "../Components/Navbar";
+// import Footer from "../Components/Footer";
+// import Navbar from "../Components/Navbar";
 
 const Cart = () => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="container mx-auto mt-3">
         <table className="table table-dark table-striped table-hover mytable">
           <thead>
@@ -62,7 +62,7 @@ const Cart = () => {
           </tbody>
         </table>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
