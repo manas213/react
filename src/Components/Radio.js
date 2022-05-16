@@ -3,12 +3,13 @@ import { prices } from "./Price";
 
 const Radio = ({ passing_handleFilters }) => {
   const handleChange = (e) => {
-    passing_handleFilters(e.target.value, "price");
+    passing_handleFilters(e.target.value, "product_price");
   };
   return (
     <>
       {prices.map((price) => {
-        <div className="form-check" key={price._id}>
+        return <div className="form-check" key={price._id}>
+          
           <input
             className="form-check-input mt-1 me-2"
             type="radio"

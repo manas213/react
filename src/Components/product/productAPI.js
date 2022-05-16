@@ -54,7 +54,7 @@ export const getRelatedProducts = (id) => {
 };
 
 // to get fitered products
-export const getFilteredProducts = (sortBy, order, skip, limit, {filters}) => {
+export const getFilteredProducts = (sortBy, order, limit, skip, {filters}) => {
   let data = { skip, filters };
   return fetch(`${API}/getfilteredproducts?limit=${limit}`, {
     method: "POST",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
 import AdminSidebar from "../AdminSidebar";
@@ -6,6 +6,8 @@ import { getAllCategories } from "../category/categoryApi";
 import { addProduct } from "./productAPI";
 
 const Addproduct = () => {
+  const file_ref = useRef();
+  const select_ref = useRef();
   const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState({
     product_name: "",
@@ -54,7 +56,9 @@ const Addproduct = () => {
   };
 
   const clickSubmit = (event) => {
-    console.log(formData);
+    setError("")
+    setSuccess(false)
+    // console.log(formData);
     event.preventDefault();
     addProduct(formData)
       .then((data) => {
@@ -69,6 +73,8 @@ const Addproduct = () => {
             count_In_Stock: "",
             category: "",
           });
+          file_ref.current.value = "";
+          select_ref.current.value = "";
           setSuccess(true);
         }
       })
@@ -145,6 +151,7 @@ const Addproduct = () => {
               <select
                 id="category"
                 className="form-control mb-2"
+                ref={select_ref}
                 onChange={handleChange("category")}
               >
                 <option>Choose category</option>
@@ -161,6 +168,7 @@ const Addproduct = () => {
                 id="product_img"
                 accept="img/*"
                 className="form-control mb-2"
+                ref={file_ref}
                 onChange={handleChange("product_img")}
                 // onChange={event =>
                 //     setProduct({ ...product, ['product_img']: event.target.files[0] })

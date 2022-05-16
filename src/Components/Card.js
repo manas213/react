@@ -15,7 +15,7 @@ const Card = ({ props }) => {
           </div>
           <div className="card-body">
             <div className="text-center">
-              <h5 className="card-title">{props.product_name}</h5>
+              <h5 className="card-title text-truncate">{props.product_name}</h5>
               <h6 className="card-title">Rs.{props.product_price}</h6>
               <p
                 className="card-title text-truncate"

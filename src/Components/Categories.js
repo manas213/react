@@ -33,7 +33,7 @@ const Categories = ({ passing_handleFilters }) => {
         }
       })
       .catch((err) => console.log(err));
-  });
+  },[]);
   return (
     <>
       {categories.map((category, i) => {

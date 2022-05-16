@@ -16,21 +16,20 @@ const Deals = () => {
     filters: { category: [], product_price: [] },
   });
 
-  useEffect =
-    (() => {
-      getFilteredProducts(sortBy, order, limit, skip, myfilters)
-        .then((data) => {
-          if (data.error) {
-            console.log(data.error);
-          } else {
-            setFilteredResult(data.filterProduct);
-            setSize(data.size);
-            setSkip(0);
-          }
-        })
-        .catch((err) => console.log(err));
-    },
-    [myfilters]);
+  useEffect(() => {
+    getFilteredProducts(sortBy, order, limit, skip, myfilters)
+      .then((data) => {
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          setFilteredResult(data.filterProduct);
+          setSize(data.size);
+          setSkip(0);
+          console.log(data)
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [myfilters]);
 
   const handlePrice = (index) => {
     const data = prices;
@@ -53,6 +52,7 @@ const Deals = () => {
       newFilter.filters[filterBy] = priceValue;
     }
     setMyFilters(newFilter);
+    // console.log(newFilter.filters)
   };
 
   const loadMore = () => {
@@ -82,11 +82,12 @@ const Deals = () => {
               }
             />
             Prices
-            <Radio
+            {/* <Radio
               passing_handleFilters={(filters) =>
                 handleFilters(filters, "product_price")
               }
-            />
+            /> */}
+            <Radio passing_handleFilters={(filters)=>handleFilters(filters,"product_price")}/>
           </div>
           <div className="col-md-9">
             <DisplayProducts products={filteredResult} />

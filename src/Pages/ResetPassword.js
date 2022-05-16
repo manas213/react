@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { resetPassword } from "../Components/auth";
 
@@ -13,6 +13,8 @@ const ResetPassword = () => {
   const [success, setSuccess] = useState(false);
 
   const passwordReset = (e) => {
+    setError("");
+    setSuccess(false);
     e.preventDefault();
     resetPassword(token, email, newPassword)
       .then((data) => {
@@ -39,36 +41,36 @@ const ResetPassword = () => {
         </div>
       );
     }
-
-    return (
-      <>
-        {showError()}
-        {showSuccess()}
-        <h3>Reset Password</h3>
-        <div className="container w-50 my-5">
-          {!success && (
-            <>
-              <label>Email:</label>
-              <input
-                type={"text"}
-                className="form-control"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <label>New Password:</label>
-              <input
-                type={"text"}
-                className="form-control"
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-              <button className="btn btn-warning" onClick={passwordReset}>
-                Reset Password
-              </button>
-            </>
-          )}
-        </div>
-      </>
-    );
   };
+
+  return (
+    <>
+      {showError()}
+      {showSuccess()}
+      <div className="container w-50 my-5">
+        {!success && (
+          <>
+          <h3>ResetPassword</h3>
+            <label>Email:</label>
+            <input
+              type={"text"}
+              className="form-control"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <label>New Password:</label>
+            <input
+              type={"text"}
+              className="form-control"
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <button className="btn btn-warning" onClick={passwordReset}>
+              Reset Password
+            </button>
+          </>
+        )}
+      </div>
+    </>
+  );
 };
 
 export default ResetPassword;
